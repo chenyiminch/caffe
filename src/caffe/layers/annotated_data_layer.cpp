@@ -28,7 +28,8 @@ AnnotatedDataLayer<Dtype>::~AnnotatedDataLayer() {
 template <typename Dtype>
 void AnnotatedDataLayer<Dtype>::DataLayerSetUp(
     const vector<Blob<Dtype>*>& bottom, const vector<Blob<Dtype>*>& top) {
-  const int batch_size = this->layer_param_.data_param().batch_size();
+  // const int batch_size = this->layer_param_.data_param().batch_size();
+  const int batch_size = this->layer_param_.annotated_data_param().batch_size();
   const AnnotatedDataParameter& anno_data_param =
       this->layer_param_.annotated_data_param();
   for (int i = 0; i < anno_data_param.batch_sampler_size(); ++i) {

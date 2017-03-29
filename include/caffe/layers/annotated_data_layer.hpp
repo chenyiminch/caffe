@@ -12,6 +12,7 @@
 #include "caffe/layers/base_data_layer.hpp"
 #include "caffe/proto/caffe.pb.h"
 #include "caffe/util/db.hpp"
+#include "caffe/image_data_reader.hpp"
 
 namespace caffe {
 
@@ -31,7 +32,8 @@ class AnnotatedDataLayer : public BasePrefetchingDataLayer<Dtype> {
  protected:
   virtual void load_batch(Batch<Dtype>* batch);
 
-  DataReader<AnnotatedDatum> reader_;
+  // DataReader<AnnotatedDatum> reader_;
+  ImageDataReader reader_;
   bool has_anno_type_;
   AnnotatedDatum_AnnotationType anno_type_;
   vector<BatchSampler> batch_samplers_;

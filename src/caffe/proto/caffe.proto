@@ -762,6 +762,10 @@ message AnnotatedDataParameter {
   // If provided, it will replace the AnnotationType stored in each
   // AnnotatedDatum.
   optional AnnotatedDatum.AnnotationType anno_type = 3;
+  optional uint32 batch_size = 4;
+  optional string root_folder = 5;
+  optional string source = 6;
+  optional uint32 prefetch = 7 [default = 4];
 }
 
 message ArgMaxParameter {
