@@ -121,7 +121,7 @@ void AnnotatedDataLayer<Dtype>::load_batch(Batch<Dtype>* batch) {
 
   // Reshape according to the first anno_datum of each batch
   // on single input batches allows for inputs of varying dimension.
-  const int batch_size = this->layer_param_.data_param().batch_size();
+  const int batch_size = this->layer_param_.annotated_data_param().batch_size();
   const AnnotatedDataParameter& anno_data_param =
       this->layer_param_.annotated_data_param();
   const TransformationParameter& transform_param =

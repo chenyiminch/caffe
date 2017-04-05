@@ -5,7 +5,7 @@
 #include "caffe/layers/base_data_layer.hpp"
 #include "caffe/parallel.hpp"
 #include "caffe/util/blocking_queue.hpp"
-
+#include "caffe/image_data_reader.hpp"
 namespace caffe {
 
 template<typename T>
@@ -95,5 +95,7 @@ template class BlockingQueue<
   shared_ptr<DataReader<AnnotatedDatum>::QueuePair> >;
 template class BlockingQueue<P2PSync<float>*>;
 template class BlockingQueue<P2PSync<double>*>;
+template class BlockingQueue<
+  shared_ptr<ImageDataReader::QueuePair> >;
 
 }  // namespace caffe

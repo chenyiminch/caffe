@@ -195,6 +195,7 @@ void ImageDataReader::Body::read_one(vector<pair<string, string> >::iterator& it
     DLOG(INFO) << "Restarting data prefetching from start.";
     iter = ptvec_image_annotation.begin();
   }
+
 }
 
 // Instance class
