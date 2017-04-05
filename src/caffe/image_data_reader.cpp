@@ -120,6 +120,7 @@ void ImageDataReader::Body::InternalThreadEntry() {
   load_image_list(param_.annotated_data_param().source(), param_.annotated_data_param().root_folder(), ptvec_image_annotation);
   vector<pair<string, string> >::iterator iter = ptvec_image_annotation.begin();
 
+  int line_id = 0;
   map<string, int> name_to_label;
   string label_map_file = param_.annotated_data_param().label_map_file();
   LabelMap label_map;
@@ -139,14 +140,14 @@ void ImageDataReader::Body::InternalThreadEntry() {
     for (int i = 0; i < solver_count; ++i) {
       shared_ptr<QueuePair> qp(new_queue_pairs_.pop());
       //read_one(cursor.get(), qp.get());
-      read_one(iter, ptvec_image_annotation, name_to_label, qp.get());
+      read_one(line_id, ptvec_image_annotation, name_to_label, qp.get());
       qps.push_back(qp);
     }
     // Main loop
     while (!must_stop()) {
       for (int i = 0; i < solver_count; ++i) {
         //read_one(cursor.get(), qps[i].get());
-        read_one(iter, ptvec_image_annotation, name_to_label, qps[i].get());
+        read_one(line_id, ptvec_image_annotation, name_to_label, qps[i].get());
       }
       // Check no additional readers have been created. This can happen if
       // more than one net is trained at a time per process, whether single
@@ -159,14 +160,14 @@ void ImageDataReader::Body::InternalThreadEntry() {
   }
 }
 
-void ImageDataReader::Body::read_one(vector<pair<string, string> >::iterator& iter, 
+void ImageDataReader::Body::read_one(int& line_id, 
   vector<pair<string, string> > ptvec_image_annotation, map<string, int> name_to_label, 
   QueuePair* qp) {
   AnnotatedDatum* anno_datum = qp->free_.pop();
   // TODO deserialize in-place instead of copy?
   // t->ParseFromString(cursor->value());
 
-  pair<string, string> img_anno_pair = *iter;
+  pair<string, string> img_anno_pair = ptvec_image_annotation[line_id];
 
   // LOG(INFO)<<"image file: "<<img_anno_pair.first;
   // LOG(INFO)<<"label file: "<<img_anno_pair.second; 
@@ -189,11 +190,11 @@ void ImageDataReader::Body::read_one(vector<pair<string, string> >::iterator& it
   //   cursor->SeekToFirst();
   // }
 
-  iter++;
-  if (iter == ptvec_image_annotation.end())
+  line_id++;
+  if (line_id == ptvec_image_annotation.size()-1)
   {
     DLOG(INFO) << "Restarting data prefetching from start.";
-    iter = ptvec_image_annotation.begin();
+    line_id = 0;
   }
 
 }

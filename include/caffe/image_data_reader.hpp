@@ -55,7 +55,7 @@ class ImageDataReader {
    protected:
     void InternalThreadEntry();
 
-    void read_one(vector<pair<string, string> >::iterator& iter, 
+    void read_one(int& line_id, 
     	vector<pair<string, string> > ptvec_image_annotation, map<string, int> name_to_label, QueuePair* qp);
 
     void load_image_list(string image_list_fn, string root_folder, vector<pair<string, string> >& ptvec_image_annotation);
